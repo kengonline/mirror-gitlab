@@ -9,7 +9,7 @@ react-build-tags:
   services:
     - docker:dind
   before_script:
-    - docker login -u thanan -p $DOCKER_PASSWORD hub.mfec.co.th
+    - docker login -u thanan -p Ethere@l1 hub.mfec.co.th
   script:
     - echo "[1/3] Start building image $REGISTY_IMAGE"
     - docker build --build-arg SERVER_ENV=$server_env --build-arg VERSION=$CI_COMMIT_TAG -t $REGISTY_IMAGE .
