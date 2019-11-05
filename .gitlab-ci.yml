@@ -4,8 +4,8 @@ react-build-tags:
   image: docker:latest
   stage: build
   variables:
-    DOCKER_TAG: $(echo "$CI_COMMIT_TAG" | cut -d '-' -f2-)
-    REGISTY_IMAGE: $DOCKER_SERVER/$IMAGE_REPOSITORY:$DOCKER_TAG
+    DOCKER_TAG: "$(echo $CI_COMMIT_TAG | cut -d '-' -f2-)"
+    REGISTY_IMAGE: "$DOCKER_SERVER/$IMAGE_REPOSITORY:$DOCKER_TAG"
   services:
     - docker:dind
   before_script:
