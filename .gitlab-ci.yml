@@ -9,15 +9,17 @@ react-build-tags:
   services:
     - docker:dind
   before_script:
-    - echo "Server $DOCKER_SERVER | Username $DOCKER_USERNAME"
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_SERVER
   script:
+    - echo "[1/3] Start building image $REGISTY_IMAGE"
     - docker build --build-arg SERVER_ENV=$server_env --build-arg VERSION=$CI_COMMIT_TAG -t $REGISTY_IMAGE .
+    - echo "[2/3] Pushing image $REGISTY_IMAGE to $DOCKER_SERVER"
     - docker push $REGISTY_IMAGE
+    - echo "[3/3] Finished build image"
 
     # - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     # - docker push "$CI_REGISTRY_IMAGE"
   after_script:
-    - docker logout
+    - docker logout $DOCKER_SERVER
   only:
     - tags
