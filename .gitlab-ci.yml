@@ -6,17 +6,17 @@ react-build-tags:
   services:
     - docker:dind
   before_script:
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_SERVER
+    # Initial variables
     - DOCKER_TAG="$(echo $CI_COMMIT_TAG | cut -d '-' -f2-)"
     - REGISTY_IMAGE="$DOCKER_SERVER/$IMAGE_REPOSITORY:$DOCKER_TAG"
+
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_SERVER
   script:
-    - echo $REGISTY_IMAGE
-    - echo $DOCKER_TAG
-    # - echo "[1/3] Start building image $REGISTY_IMAGE"
-    # - docker build --build-arg SERVER_ENV=$server_env --build-arg VERSION=$CI_COMMIT_TAG -t $REGISTY_IMAGE .
-    # - echo "[2/3] Pushing image $REGISTY_IMAGE to $DOCKER_SERVER"
-    # - docker push $REGISTY_IMAGE
-    # - echo "[3/3] Finished build image"
+    - echo "[1/3] Start building image $REGISTY_IMAGE"
+    - docker build --build-arg SERVER_ENV=$server_env --build-arg VERSION=$CI_COMMIT_TAG -t $REGISTY_IMAGE .
+    - echo "[2/3] Pushing image $REGISTY_IMAGE to $DOCKER_SERVER"
+    - docker push $REGISTY_IMAGE
+    - echo "[3/3] Finished build image"
   after_script:
     - docker logout $DOCKER_SERVER
   only:
